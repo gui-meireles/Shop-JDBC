@@ -1,7 +1,6 @@
 package br.com.nava.demo.repository;
 
 import br.com.nava.demo.mapper.ProductMapper;
-import br.com.nava.demo.model.CategoryModel;
 import br.com.nava.demo.model.ProductModel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

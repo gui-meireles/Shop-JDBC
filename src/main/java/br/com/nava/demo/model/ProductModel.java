@@ -1,6 +1,6 @@
 package br.com.nava.demo.model;
 
-import lombok.*;
+import lombok.Data;
 
 @Data
 public class ProductModel {
