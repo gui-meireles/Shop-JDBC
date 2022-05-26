@@ -1,0 +1,15 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/demo_db?autoReconnect=true&rewriteBatchedStatements=true&useSSL=false
+    username: root
+    password: root
+    maxPoolSize: 20
+    minPoolSize: 10
+    maxStatements: 50
+    testConnectionOnCheckout: false
+    acquireIncrement: localhost
+    idleConnectionTestPeriod: 300
+    autoReconnect: true
