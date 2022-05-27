@@ -1,6 +1,8 @@
 package br.com.nava.demo.service;
 
+import br.com.nava.demo.exceptions.BadRequestException;
 import br.com.nava.demo.exceptions.BusinessException;
+import br.com.nava.demo.exceptions.NotFoundException;
 import br.com.nava.demo.model.CategoryModel;
 import br.com.nava.demo.repository.CategoryDAO;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +31,7 @@ public class CategoryService implements ICrudService<CategoryModel> {
      * @return Category matching ID
      */
     @Override
-    public CategoryModel getById(Integer catId) {
+    public CategoryModel getById(Integer catId) throws NotFoundException {
         CategoryModel category = categoryDAO.getById(catId);
         if (category == null) {
             throw new BusinessException("Category not found!");
@@ -42,7 +44,7 @@ public class CategoryService implements ICrudService<CategoryModel> {
      * @param category Category to be saved
      */
     @Override
-    public void save(CategoryModel category) {
+    public void save(CategoryModel category) throws BadRequestException {
         validateSave(category);
         categoryDAO.save(category);
     }
@@ -53,7 +55,7 @@ public class CategoryService implements ICrudService<CategoryModel> {
      * @param catId Category ID to be updated
      */
     @Override
-    public void update(CategoryModel category, Integer catId) {
+    public void update(CategoryModel category, Integer catId) throws BadRequestException {
         validateUpdate(category, catId);
         categoryDAO.update(category, catId);
     }
@@ -63,7 +65,7 @@ public class CategoryService implements ICrudService<CategoryModel> {
      * @param catId Category ID
      */
     @Override
-    public void delete(Integer catId) {
+    public void delete(Integer catId) throws NotFoundException {
         categoryDAO.delete(catId);
     }
 
@@ -71,9 +73,9 @@ public class CategoryService implements ICrudService<CategoryModel> {
      * Validate category save
      * @param category validate save
      */
-    private void validateSave(CategoryModel category) {
+    private void validateSave(CategoryModel category) throws BadRequestException{
         if (category.getName() == null || category.getName().isEmpty()) {
-            throw new BusinessException("Error when saving: The name field was not inserted!");
+            throw new BadRequestException("Error when saving: The name field was not inserted!");
         }
     }
 
@@ -82,12 +84,12 @@ public class CategoryService implements ICrudService<CategoryModel> {
      * @param category
      * @param catId Category ID
      */
-    private void validateUpdate(CategoryModel category, Integer catId) {
+    private void validateUpdate(CategoryModel category, Integer catId) throws BadRequestException{
         if (category.getName() == null || category.getName().isEmpty()) {
-            throw new BusinessException("Error when updating: The name field was not inserted!");
+            throw new BadRequestException("Error when updating: The name field was not inserted!");
         }
         if (catId == null) {
-            throw new BusinessException("Error when saving: The category Id field was not inserted!");
+            throw new BadRequestException("Error when saving: The category Id field was not inserted!");
         }
     }
 }

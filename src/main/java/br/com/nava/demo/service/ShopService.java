@@ -1,6 +1,8 @@
 package br.com.nava.demo.service;
 
+import br.com.nava.demo.exceptions.BadRequestException;
 import br.com.nava.demo.exceptions.BusinessException;
+import br.com.nava.demo.exceptions.NotFoundException;
 import br.com.nava.demo.model.ShopModel;
 import br.com.nava.demo.repository.ShopDAO;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +33,7 @@ public class ShopService implements ICrudService<ShopModel> {
      * @return Shop matching ID
      */
     @Override
-    public ShopModel getById(Integer shpId) {
+    public ShopModel getById(Integer shpId) throws NotFoundException {
         ShopModel shop = shopDAO.getById(shpId);
         if (shop == null) {
             throw new BusinessException("Shop not found!");
@@ -45,7 +47,7 @@ public class ShopService implements ICrudService<ShopModel> {
      * @param shop Shop to be saved
      */
     @Override
-    public void save(ShopModel shop) {
+    public void save(ShopModel shop) throws BadRequestException {
         validateSave(shop);
         shopDAO.save(shop);
     }
@@ -57,7 +59,7 @@ public class ShopService implements ICrudService<ShopModel> {
      * @param shpId Shop ID to be updated
      */
 
-    public void update(ShopModel shop, Integer shpId) {
+    public void update(ShopModel shop, Integer shpId) throws BadRequestException {
         validateUpdate(shop, shpId);
         shopDAO.update(shop, shpId);
     }
@@ -68,7 +70,7 @@ public class ShopService implements ICrudService<ShopModel> {
      * @param id Shop ID
      */
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws NotFoundException{
         shopDAO.delete(id);
     }
 
@@ -77,12 +79,12 @@ public class ShopService implements ICrudService<ShopModel> {
      *
      * @param shop validate save
      */
-    private void validateSave(ShopModel shop) {
+    private void validateSave(ShopModel shop) throws BadRequestException{
         if (shop.getName() == null || shop.getName().isEmpty()) {
-            throw new BusinessException("Error when saving: The name field was not inserted!");
+            throw new BadRequestException("Error when saving: The name field was not inserted!");
         }
         if (shop.getAddress() == null || shop.getAddress().isEmpty()) {
-            throw new BusinessException("Error when saving: The address field was not inserted!");
+            throw new BadRequestException("Error when saving: The address field was not inserted!");
         }
     }
 
@@ -92,15 +94,15 @@ public class ShopService implements ICrudService<ShopModel> {
      * @param shop
      * @param shpId Shop ID
      */
-    private void validateUpdate(ShopModel shop, Integer shpId) {
+    private void validateUpdate(ShopModel shop, Integer shpId) throws BadRequestException{
         if (shop.getName() == null || shop.getName().isEmpty()) {
-            throw new BusinessException("Error when updating: The name field was not inserted!");
+            throw new BadRequestException("Error when updating: The name field was not inserted!");
         }
         if (shop.getAddress() == null || shop.getAddress().isEmpty()) {
-            throw new BusinessException("Error when updating: The address field was not inserted!");
+            throw new BadRequestException("Error when updating: The address field was not inserted!");
         }
         if (shpId == null) {
-            throw new BusinessException("Error when updating: The shop Id field was not inserted!");
+            throw new BadRequestException("Error when updating: The shop Id field was not inserted!");
         }
     }
 }
